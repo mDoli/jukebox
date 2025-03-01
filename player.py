@@ -8,7 +8,18 @@ import config
 import beeper
 import data_management
 from datetime import datetime
+import os
+import subprocess
 
+# Get the correct PulseAudio sink
+try:
+    pulse_sink = subprocess.check_output("pactl get-default-sink", shell=True).decode("utf-8").strip()
+    os.environ["PULSE_SINK"] = pulse_sink
+    print(f"Set PULSE_SINK to {pulse_sink}")
+except Exception as e:
+    print(f"Failed to set PULSE_SINK: {e}")
+
+# Start spotify
 print("Welcome in spotify player")
 now = datetime.now()
 print("It is ", now.strftime("%Y-%m-%d %H:%M:%S"))
